@@ -57,7 +57,12 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-              <Button size="lg" variant="premium" className="text-lg px-8 py-4 h-auto">
+              <Button 
+                size="lg" 
+                variant="premium" 
+                className="text-lg px-8 py-4 h-auto"
+                onClick={() => window.location.href = '/dashboard'}
+              >
                 Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>

@@ -45,6 +45,7 @@ const CTA = () => {
               size="lg" 
               variant="secondary" 
               className="text-lg px-10 py-4 h-auto bg-white text-primary hover:bg-white/90 hover:shadow-xl font-semibold"
+              onClick={() => window.location.href = '/dashboard'}
             >
               Start Your Free Trial
               <ArrowRight className="w-5 h-5 ml-2" />
