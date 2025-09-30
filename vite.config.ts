@@ -5,6 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: "/veerschedular/", // <-- Yeh line yahan add karein
   server: {
     host: "::",
     port: 8080,
