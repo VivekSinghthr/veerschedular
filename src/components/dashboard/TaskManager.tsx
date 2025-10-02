@@ -101,6 +101,14 @@ const TaskManager = ({ tasks, setTasks }: TaskManagerProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'in-progress' | 'completed'>('all');
+  const [isCreating, setIsCreating] = useState(false);
+  const [newTask, setNewTask] = useState({
+    title: '',
+    description: '',
+    priority: 'medium' as const,
+    dueDate: '',
+    tags: ''
+  });
 
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -146,6 +154,24 @@ const TaskManager = ({ tasks, setTasks }: TaskManagerProps) => {
 
   const stats = getStatusStats();
 
+  const handleCreateTask = () => {
+    if (newTask.title.trim()) {
+      const task: Task = {
+        id: Date.now().toString(),
+        title: newTask.title.trim(),
+        description: newTask.description.trim(),
+        priority: newTask.priority,
+        status: 'pending',
+        dueDate: newTask.dueDate || 'No date',
+        tags: newTask.tags.split(',').map(t => t.trim()).filter(t => t)
+      };
+
+      setTasks(prev => [...prev, task]);
+      setNewTask({ title: '', description: '', priority: 'medium', dueDate: '', tags: '' });
+      setIsCreating(false);
+    }
+  };
+
   return (
     <Card className="p-6 bg-card-elevated animate-scale-in">
       <div className="flex items-center justify-between mb-6">
@@ -163,11 +189,66 @@ const TaskManager = ({ tasks, setTasks }: TaskManagerProps) => {
             </Badge>
           </div>
         </div>
-        <Button className="hover-scale">
+        <Button className="hover-scale" onClick={() => setIsCreating(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Add Task
         </Button>
       </div>
+
+      {/* Create Task Form */}
+      {isCreating && (
+        <div className="mb-6 p-4 border border-border rounded-lg bg-background animate-scale-in">
+          <Input
+            placeholder="Task title..."
+            value={newTask.title}
+            onChange={(e) => setNewTask(prev => ({ ...prev, title: e.target.value }))}
+            className="mb-3"
+          />
+          <Input
+            placeholder="Description..."
+            value={newTask.description}
+            onChange={(e) => setNewTask(prev => ({ ...prev, description: e.target.value }))}
+            className="mb-3"
+          />
+          <div className="grid grid-cols-2 gap-3 mb-3">
+            <select
+              value={newTask.priority}
+              onChange={(e) => setNewTask(prev => ({ ...prev, priority: e.target.value as any }))}
+              className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+            >
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
+            </select>
+            <Input
+              type="date"
+              value={newTask.dueDate}
+              onChange={(e) => setNewTask(prev => ({ ...prev, dueDate: e.target.value }))}
+            />
+          </div>
+          <Input
+            placeholder="Tags (comma separated)..."
+            value={newTask.tags}
+            onChange={(e) => setNewTask(prev => ({ ...prev, tags: e.target.value }))}
+            className="mb-3"
+          />
+          <div className="flex justify-end space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setIsCreating(false);
+                setNewTask({ title: '', description: '', priority: 'medium', dueDate: '', tags: '' });
+              }}
+            >
+              Cancel
+            </Button>
+            <Button size="sm" onClick={handleCreateTask}>
+              Create Task
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
