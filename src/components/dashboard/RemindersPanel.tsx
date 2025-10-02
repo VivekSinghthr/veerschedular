@@ -4,47 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Bell, Clock, AlertTriangle, CheckCircle, X } from "lucide-react";
+import { Reminder } from '@/pages/Dashboard';
 
-interface Reminder {
-  id: string;
-  title: string;
-  description: string;
-  time: Date;
-  priority: 'high' | 'medium' | 'low';
-  isActive: boolean;
-  category: 'meeting' | 'task' | 'personal' | 'work';
+interface RemindersPanelProps {
+  reminders: Reminder[];
+  setReminders: React.Dispatch<React.SetStateAction<Reminder[]>>;
 }
 
-const RemindersPanel = () => {
-  const [reminders, setReminders] = useState<Reminder[]>([
-    {
-      id: '1',
-      title: 'Team Standup',
-      description: 'Daily standup meeting with development team',
-      time: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes from now
-      priority: 'high',
-      isActive: true,
-      category: 'meeting'
-    },
-    {
-      id: '2',
-      title: 'Submit Report',
-      description: 'Monthly progress report due today',
-      time: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours from now
-      priority: 'medium',
-      isActive: true,
-      category: 'work'
-    },
-    {
-      id: '3',
-      title: 'Code Review',
-      description: 'Review pull requests from team members',
-      time: new Date(Date.now() + 4 * 60 * 60 * 1000), // 4 hours from now
-      priority: 'low',
-      isActive: true,
-      category: 'task'
-    }
-  ]);
+const RemindersPanel = ({ reminders, setReminders }: RemindersPanelProps) => {
 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isCreating, setIsCreating] = useState(false);

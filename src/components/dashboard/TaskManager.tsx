@@ -17,15 +17,11 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Task } from '@/pages/Dashboard';
 
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  priority: 'high' | 'medium' | 'low';
-  status: 'pending' | 'in-progress' | 'completed';
-  dueDate: string;
-  tags: string[];
+interface TaskManagerProps {
+  tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 interface SortableTaskProps {
@@ -101,39 +97,11 @@ const SortableTask = ({ task, onStatusChange }: SortableTaskProps) => {
   );
 };
 
-const TaskManager = () => {
+const TaskManager = ({ tasks, setTasks }: TaskManagerProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'in-progress' | 'completed'>('all');
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: '1',
-      title: 'Design Homepage',
-      description: 'Create wireframes and mockups for the new homepage design',
-      priority: 'high',
-      status: 'in-progress',
-      dueDate: 'Today',
-      tags: ['Design', 'UI/UX']
-    },
-    {
-      id: '2',
-      title: 'Database Schema',
-      description: 'Design and implement the user authentication database schema',
-      priority: 'medium',
-      status: 'pending',
-      dueDate: 'Tomorrow',
-      tags: ['Backend', 'Database']
-    },
-    {
-      id: '3',
-      title: 'User Testing',
-      description: 'Conduct user testing sessions for the mobile app prototype',
-      priority: 'high',
-      status: 'completed',
-      dueDate: 'Yesterday',
-      tags: ['Testing', 'Mobile']
-    }
-  ]);
+
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);

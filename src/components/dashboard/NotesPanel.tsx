@@ -5,38 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Search, Edit3, Trash2, Tag, Calendar } from "lucide-react";
+import { Note } from '@/pages/Dashboard';
 
-interface Note {
-  id: string;
-  title: string;
-  content: string;
-  tags: string[];
-  createdAt: Date;
-  updatedAt: Date;
-  isPinned: boolean;
+interface NotesPanelProps {
+  notes: Note[];
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
 }
 
-const NotesPanel = () => {
-  const [notes, setNotes] = useState<Note[]>([
-    {
-      id: '1',
-      title: 'Project Ideas',
-      content: 'New app concepts for productivity tools. Consider AI integration and user experience improvements.',
-      tags: ['ideas', 'projects'],
-      createdAt: new Date('2024-01-15'),
-      updatedAt: new Date('2024-01-16'),
-      isPinned: true
-    },
-    {
-      id: '2',
-      title: 'Meeting Notes',
-      content: 'Discussed new feature requirements and timeline adjustments for Q2.',
-      tags: ['meetings', 'work'],
-      createdAt: new Date('2024-01-14'),
-      updatedAt: new Date('2024-01-14'),
-      isPinned: false
-    }
-  ]);
+const NotesPanel = ({ notes, setNotes }: NotesPanelProps) => {
 
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
